@@ -1,0 +1,764 @@
+<html>
+<head>
+<style>
+.hidden {
+	display: none;
+}
+.piano {
+	background-color: #222;
+	height: 210px;
+	width: 1196px;
+}
+.felt {
+	height: 2px;
+	background-color: #900;
+}
+.whitekey {
+	background-color: #FFF;
+	position: relative;
+	float: left;
+	width: 50px;
+	height: 200px;
+	box-shadow: 0 -10px 2px 0px #888 inset, 0 -60px 40px 10px #EEE inset;
+	border: 1px solid #666;
+	border-radius: 0 0 10px 10px;
+}
+.blackkey {
+	background-color: #111;
+	position: relative;
+	float: left;
+	width: 30px;
+	height: 140px;
+	box-shadow: rgb(48, 48, 48) 0px -9px 10px 9px inset, rgb(247, 247, 247) 0px -15px 0px 0px inset;
+	border: 1px solid black;
+	border-radius: 0 0 5px 5px;
+	margin-left: -16px;
+	margin-right: -16px;
+	z-index: 2;
+}
+.whitekey:active, .whitekey.selected {
+    box-shadow: 0 -5px 10px -3px #272927 inset;
+}
+.blackkey:active, .blackkey.selected {
+	box-shadow: 0 0 6px 7px #303030 inset, 0 -5px #F7F7F7 inset;
+}
+
+.whitekey p {
+	font-family: "Comic Sans MS", cursive, sans-serif;
+	font-size: 2em;
+	text-shadow: 2px 2px #888;
+	text-align:center;
+	margin-top: 140px;
+}
+
+.blackkey p {
+	font-family: "Comic Sans MS", cursive, sans-serif;
+	font-size: 1.5em;
+	color: white;
+	text-shadow: 2px 2px #888;
+	text-align:center;
+	margin-top: 85px;
+}
+
+.button {
+	background-color: #111;
+	color: #EEE;
+	padding: 0 10px;
+	margin-right: 5px;
+	float: left;
+	font-family: "Comic Sans MS", cursive, sans-serif;
+	cursor: pointer;
+	border-radius: 4px;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+}
+.button-spacer {
+	margin-right: 5px;
+	float: left;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+}
+.button.right {
+	float: right;
+}
+.button.selected {
+	background: #7d7e7d; /* Old browsers */
+	background: -moz-linear-gradient(top,  #7d7e7d 0%, #0e0e0e 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#7d7e7d), color-stop(100%,#0e0e0e)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #7d7e7d 0%,#0e0e0e 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #7d7e7d 0%,#0e0e0e 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #7d7e7d 0%,#0e0e0e 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #7d7e7d 0%,#0e0e0e 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7d7e7d', endColorstr='#0e0e0e',GradientType=0 ); /* IE6-9 */
+}
+.button:active , .button.selected:active {
+	background: #555;
+	background-color: #555;
+}
+.clear {
+	clear: both;
+	display: block;
+	margin-bottom: 5px;
+}
+</style>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+</head>
+<body>
+
+<div id='piano-samples' class='hidden'>
+
+	<audio id='Click' preload='auto' controls>
+		<source src='samples/click.mp3' type='audio/mp3'></source>
+	</audio>
+
+	<audio id='Piano-0' preload='auto' controls>
+		<source src='samples/Piano/Sample_0.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Piano-1' preload='auto' controls>
+		<source src='samples/Piano/Sample_1.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Piano-2' preload='auto' controls>
+		<source src='samples/Piano/Sample_2.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Piano-3' preload='auto' controls>
+		<source src='samples/Piano/Sample_3.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Piano-4' preload='auto' controls>
+		<source src='samples/Piano/Sample_4.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Piano-5' preload='auto' controls>
+		<source src='samples/Piano/Sample_5.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Piano-6' preload='auto' controls>
+		<source src='samples/Piano/Sample_6.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Piano-7' preload='auto' controls>
+		<source src='samples/Piano/Sample_7.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Piano-8' preload='auto' controls>
+		<source src='samples/Piano/Sample_8.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Piano-9' preload='auto' controls>
+		<source src='samples/Piano/Sample_9.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Piano-10' preload='auto' controls>
+		<source src='samples/Piano/Sample_10.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Piano-11' preload='auto' controls>
+		<source src='samples/Piano/Sample_11.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Piano-12' preload='auto' controls>
+		<source src='samples/Piano/Sample_12.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Piano-13' preload='auto' controls>
+		<source src='samples/Piano/Sample_13.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Piano-14' preload='auto' controls>
+		<source src='samples/Piano/Sample_14.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Piano-15' preload='auto' controls>
+		<source src='samples/Piano/Sample_15.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Piano-16' preload='auto' controls>
+		<source src='samples/Piano/Sample_16.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Piano-17' preload='auto' controls>
+		<source src='samples/Piano/Sample_17.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Piano-18' preload='auto' controls>
+		<source src='samples/Piano/Sample_18.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Piano-19' preload='auto' controls>
+		<source src='samples/Piano/Sample_19.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Piano-20' preload='auto' controls>
+		<source src='samples/Piano/Sample_20.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Piano-21' preload='auto' controls>
+		<source src='samples/Piano/Sample_21.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Piano-22' preload='auto' controls>
+		<source src='samples/Piano/Sample_22.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Piano-23' preload='auto' controls>
+		<source src='samples/Piano/Sample_23.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Piano-24' preload='auto' controls>
+		<source src='samples/Piano/Sample_24.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Piano-25' preload='auto' controls>
+		<source src='samples/Piano/Sample_25.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Piano-26' preload='auto' controls>
+		<source src='samples/Piano/Sample_26.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Piano-27' preload='auto' controls>
+		<source src='samples/Piano/Sample_27.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Piano-28' preload='auto' controls>
+		<source src='samples/Piano/Sample_28.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Piano-29' preload='auto' controls>
+		<source src='samples/Piano/Sample_29.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Piano-30' preload='auto' controls>
+		<source src='samples/Piano/Sample_30.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Piano-31' preload='auto' controls>
+		<source src='samples/Piano/Sample_31.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Piano-32' preload='auto' controls>
+		<source src='samples/Piano/Sample_32.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Piano-33' preload='auto' controls>
+		<source src='samples/Piano/Sample_33.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Piano-34' preload='auto' controls>
+		<source src='samples/Piano/Sample_34.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Piano-35' preload='auto' controls>
+		<source src='samples/Piano/Sample_35.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Piano-36' preload='auto' controls>
+		<source src='samples/Piano/Sample_36.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Piano-37' preload='auto' controls>
+		<source src='samples/Piano/Sample_37.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Piano-38' preload='auto' controls>
+		<source src='samples/Piano/Sample_38.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Piano-39' preload='auto' controls>
+		<source src='samples/Piano/Sample_39.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Piano-40' preload='auto' controls>
+		<source src='samples/Piano/Sample_40.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Piano-41' preload='auto' controls>
+		<source src='samples/Piano/Sample_41.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Piano-42' preload='auto' controls>
+		<source src='samples/Piano/Sample_42.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Piano-43' preload='auto' controls>
+		<source src='samples/Piano/Sample_43.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Piano-44' preload='auto' controls>
+		<source src='samples/Piano/Sample_44.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Piano-45' preload='auto' controls>
+		<source src='samples/Piano/Sample_45.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Piano-46' preload='auto' controls>
+		<source src='samples/Piano/Sample_46.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Piano-47' preload='auto' controls>
+		<source src='samples/Piano/Sample_47.wav' type='audio/wav'></source>
+	</audio>
+
+	<audio id='Sax-0' preload='auto' controls>
+		<source src='samples/Sax/Sample_0.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Sax-1' preload='auto' controls>
+		<source src='samples/Sax/Sample_1.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Sax-2' preload='auto' controls>
+		<source src='samples/Sax/Sample_2.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Sax-3' preload='auto' controls>
+		<source src='samples/Sax/Sample_3.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Sax-4' preload='auto' controls>
+		<source src='samples/Sax/Sample_4.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Sax-5' preload='auto' controls>
+		<source src='samples/Sax/Sample_5.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Sax-6' preload='auto' controls>
+		<source src='samples/Sax/Sample_6.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Sax-7' preload='auto' controls>
+		<source src='samples/Sax/Sample_7.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Sax-8' preload='auto' controls>
+		<source src='samples/Sax/Sample_8.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Sax-9' preload='auto' controls>
+		<source src='samples/Sax/Sample_9.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Sax-10' preload='auto' controls>
+		<source src='samples/Sax/Sample_10.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Sax-11' preload='auto' controls>
+		<source src='samples/Sax/Sample_11.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Sax-12' preload='auto' controls>
+		<source src='samples/Sax/Sample_12.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Sax-13' preload='auto' controls>
+		<source src='samples/Sax/Sample_13.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Sax-14' preload='auto' controls>
+		<source src='samples/Sax/Sample_14.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Sax-15' preload='auto' controls>
+		<source src='samples/Sax/Sample_15.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Sax-16' preload='auto' controls>
+		<source src='samples/Sax/Sample_16.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Sax-17' preload='auto' controls>
+		<source src='samples/Sax/Sample_17.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Sax-18' preload='auto' controls>
+		<source src='samples/Sax/Sample_18.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Sax-19' preload='auto' controls>
+		<source src='samples/Sax/Sample_19.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Sax-20' preload='auto' controls>
+		<source src='samples/Sax/Sample_20.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Sax-21' preload='auto' controls>
+		<source src='samples/Sax/Sample_21.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Sax-22' preload='auto' controls>
+		<source src='samples/Sax/Sample_22.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Sax-23' preload='auto' controls>
+		<source src='samples/Sax/Sample_23.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Sax-24' preload='auto' controls>
+		<source src='samples/Sax/Sample_24.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Sax-25' preload='auto' controls>
+		<source src='samples/Sax/Sample_25.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Sax-26' preload='auto' controls>
+		<source src='samples/Sax/Sample_26.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Sax-27' preload='auto' controls>
+		<source src='samples/Sax/Sample_27.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Sax-28' preload='auto' controls>
+		<source src='samples/Sax/Sample_28.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Sax-29' preload='auto' controls>
+		<source src='samples/Sax/Sample_29.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Sax-30' preload='auto' controls>
+		<source src='samples/Sax/Sample_30.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Sax-31' preload='auto' controls>
+		<source src='samples/Sax/Sample_31.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Sax-32' preload='auto' controls>
+		<source src='samples/Sax/Sample_32.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Sax-33' preload='auto' controls>
+		<source src='samples/Sax/Sample_33.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Sax-34' preload='auto' controls>
+		<source src='samples/Sax/Sample_34.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Sax-35' preload='auto' controls>
+		<source src='samples/Sax/Sample_35.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Sax-36' preload='auto' controls>
+		<source src='samples/Sax/Sample_36.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Sax-37' preload='auto' controls>
+		<source src='samples/Sax/Sample_37.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Sax-38' preload='auto' controls>
+		<source src='samples/Sax/Sample_38.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Sax-39' preload='auto' controls>
+		<source src='samples/Sax/Sample_39.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Sax-40' preload='auto' controls>
+		<source src='samples/Sax/Sample_40.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Sax-41' preload='auto' controls>
+		<source src='samples/Sax/Sample_41.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Sax-42' preload='auto' controls>
+		<source src='samples/Sax/Sample_42.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Sax-43' preload='auto' controls>
+		<source src='samples/Sax/Sample_43.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Sax-44' preload='auto' controls>
+		<source src='samples/Sax/Sample_44.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Sax-45' preload='auto' controls>
+		<source src='samples/Sax/Sample_45.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Sax-46' preload='auto' controls>
+		<source src='samples/Sax/Sample_46.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Sax-47' preload='auto' controls>
+		<source src='samples/Sax/Sample_47.wav' type='audio/wav'></source>
+	</audio>
+
+	<audio id='Trombone-0' preload='auto' controls>
+		<source src='samples/Trombone/Sample_0.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Trombone-1' preload='auto' controls>
+		<source src='samples/Trombone/Sample_1.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Trombone-2' preload='auto' controls>
+		<source src='samples/Trombone/Sample_2.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Trombone-3' preload='auto' controls>
+		<source src='samples/Trombone/Sample_3.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Trombone-4' preload='auto' controls>
+		<source src='samples/Trombone/Sample_4.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Trombone-5' preload='auto' controls>
+		<source src='samples/Trombone/Sample_5.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Trombone-6' preload='auto' controls>
+		<source src='samples/Trombone/Sample_6.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Trombone-7' preload='auto' controls>
+		<source src='samples/Trombone/Sample_7.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Trombone-8' preload='auto' controls>
+		<source src='samples/Trombone/Sample_8.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Trombone-9' preload='auto' controls>
+		<source src='samples/Trombone/Sample_9.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Trombone-10' preload='auto' controls>
+		<source src='samples/Trombone/Sample_10.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Trombone-11' preload='auto' controls>
+		<source src='samples/Trombone/Sample_11.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Trombone-12' preload='auto' controls>
+		<source src='samples/Trombone/Sample_12.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Trombone-13' preload='auto' controls>
+		<source src='samples/Trombone/Sample_13.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Trombone-14' preload='auto' controls>
+		<source src='samples/Trombone/Sample_14.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Trombone-15' preload='auto' controls>
+		<source src='samples/Trombone/Sample_15.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Trombone-16' preload='auto' controls>
+		<source src='samples/Trombone/Sample_16.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Trombone-17' preload='auto' controls>
+		<source src='samples/Trombone/Sample_17.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Trombone-18' preload='auto' controls>
+		<source src='samples/Trombone/Sample_18.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Trombone-19' preload='auto' controls>
+		<source src='samples/Trombone/Sample_19.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Trombone-20' preload='auto' controls>
+		<source src='samples/Trombone/Sample_20.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Trombone-21' preload='auto' controls>
+		<source src='samples/Trombone/Sample_21.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Trombone-22' preload='auto' controls>
+		<source src='samples/Trombone/Sample_22.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Trombone-23' preload='auto' controls>
+		<source src='samples/Trombone/Sample_23.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Trombone-24' preload='auto' controls>
+		<source src='samples/Trombone/Sample_24.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Trombone-25' preload='auto' controls>
+		<source src='samples/Trombone/Sample_25.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Trombone-26' preload='auto' controls>
+		<source src='samples/Trombone/Sample_26.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Trombone-27' preload='auto' controls>
+		<source src='samples/Trombone/Sample_27.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Trombone-28' preload='auto' controls>
+		<source src='samples/Trombone/Sample_28.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Trombone-29' preload='auto' controls>
+		<source src='samples/Trombone/Sample_29.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Trombone-30' preload='auto' controls>
+		<source src='samples/Trombone/Sample_30.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Trombone-31' preload='auto' controls>
+		<source src='samples/Trombone/Sample_31.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Trombone-32' preload='auto' controls>
+		<source src='samples/Trombone/Sample_32.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Trombone-33' preload='auto' controls>
+		<source src='samples/Trombone/Sample_33.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Trombone-34' preload='auto' controls>
+		<source src='samples/Trombone/Sample_34.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Trombone-35' preload='auto' controls>
+		<source src='samples/Trombone/Sample_35.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Trombone-36' preload='auto' controls>
+		<source src='samples/Trombone/Sample_36.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Trombone-37' preload='auto' controls>
+		<source src='samples/Trombone/Sample_37.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Trombone-38' preload='auto' controls>
+		<source src='samples/Trombone/Sample_38.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Trombone-39' preload='auto' controls>
+		<source src='samples/Trombone/Sample_39.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Trombone-40' preload='auto' controls>
+		<source src='samples/Trombone/Sample_40.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Trombone-41' preload='auto' controls>
+		<source src='samples/Trombone/Sample_41.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Trombone-42' preload='auto' controls>
+		<source src='samples/Trombone/Sample_42.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Trombone-43' preload='auto' controls>
+		<source src='samples/Trombone/Sample_43.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Trombone-44' preload='auto' controls>
+		<source src='samples/Trombone/Sample_44.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Trombone-45' preload='auto' controls>
+		<source src='samples/Trombone/Sample_45.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Trombone-46' preload='auto' controls>
+		<source src='samples/Trombone/Sample_46.wav' type='audio/wav'></source>
+	</audio>
+	<audio id='Trombone-47' preload='auto' controls>
+		<source src='samples/Trombone/Sample_47.wav' type='audio/wav'></source>
+	</audio>
+
+</div>
+<div id='piano-template'class='hidden'>
+<div class='piano'>
+	<div class='felt'></div>
+	<div class='keys'>
+		<div class='whitekey'></div>
+		<div class='blackkey'></div>
+		<div class='whitekey'></div>
+		<div class='whitekey'></div>
+		<div class='blackkey'></div>
+		<div class='whitekey'></div>
+		<div class='blackkey'></div>
+		<div class='whitekey'></div>
+		<div class='whitekey'></div>
+		<div class='blackkey'></div>
+		<div class='whitekey'></div>
+		<div class='blackkey'></div>
+		<div class='whitekey'></div>
+		<div class='blackkey'></div>
+		<div class='whitekey'></div>
+		<div class='whitekey'></div>
+		<div class='blackkey'></div>
+		<div class='whitekey'></div>
+		<div class='blackkey'></div>
+		<div class='whitekey'></div>
+		<div class='whitekey'></div>
+		<div class='blackkey'></div>
+		<div class='whitekey'></div>
+		<div class='blackkey'></div>
+		<div class='whitekey'></div>
+		<div class='blackkey'></div>
+		<div class='whitekey'></div>
+		<div class='whitekey'></div>
+		<div class='blackkey'></div>
+		<div class='whitekey'></div>
+		<div class='blackkey'></div>
+		<div class='whitekey'></div>
+		<div class='whitekey'></div>
+		<div class='blackkey'></div>
+		<div class='whitekey'></div>
+		<div class='blackkey'></div>
+		<div class='whitekey'></div>
+		<div class='blackkey'></div>
+		<div class='whitekey'></div>
+	</div>
+</div>
+</div>
+
+<div class='toolbar'>
+	<div class='button' id='button-piano'>Piano</div>
+	<div class='button' id='button-sax'>Sax</div>
+	<div class='button' id='button-trombone'>Trombone</div>
+	<div class='button-spacer'>&nbsp;</div>
+	<div class='button' id='button-multi'>Multi</div>
+	<div class='button' id='button-single'>Single</div>
+	<div class='button right' id='button-nokeys'>Hide Keys</div>
+	<div class='button right' id='button-keys'>Show Keys</div>
+	<div class='clear'></div>
+</div>
+
+<div id='piano'></div>
+
+<p id='key'></p>
+
+
+<script>
+$(document).ready(function() {
+	var audio = new Audio();
+	
+	var allowMultiple = true;
+
+	function play(s) {
+		if (!allowMultiple) {
+			audio.pause();
+		}
+		audio = $("#" + s)[0];
+		audio.currentTime = 0;
+		audio.play();
+	}
+	
+	setupMultiple = function(playClick) {
+		allowMultiple = true;
+		$('#button-multi').addClass('selected');
+		$('#button-single').removeClass('selected');
+		if (playClick) {
+			play("Click");
+		}
+	}
+	
+	setupSingle = function(playClick) {
+		allowMultiple = false;
+		$('#button-multi').removeClass('selected');
+		$('#button-single').addClass('selected');
+		if (playClick) {
+			play("Click");
+		}
+	}
+	
+	setupPiano = function(playClick) {
+		audio.pause();
+		$("#piano .piano .keys div").unbind("mousedown");
+		for (var i = 0 ; i < 48 ; i++) {
+			$("#piano .piano .keys div:eq(" + i + ")").mousedown(function() {
+				play("Piano-" + $("#piano .piano .keys div").index(this));
+			});
+		}
+		$('#button-piano').addClass('selected');
+		$('#button-sax').removeClass('selected');
+		$('#button-trombone').removeClass('selected');
+		if (playClick) {
+			play("Click");
+		}
+		setupMultiple(false);
+	}
+
+	setupSax = function(playClick) {
+		audio.pause();
+		$("#piano .piano .keys div").unbind("mousedown");
+		for (var i = 0 ; i < 48 ; i++) {
+			$("#piano .piano .keys div:eq(" + i + ")").mousedown(function() {
+				play("Sax-" + $("#piano .piano .keys div").index(this));
+			});
+		}
+		$('#button-piano').removeClass('selected');
+		$('#button-sax').addClass('selected');
+		$('#button-trombone').removeClass('selected');
+		if (playClick) {
+			play("Click");
+		}
+		setupSingle(false);
+	}
+
+	setupTrombone = function(playClick) {
+		audio.pause();
+		$("#piano .piano .keys div").unbind("mousedown");
+		for (var i = 0 ; i < 48 ; i++) {
+			$("#piano .piano .keys div:eq(" + i + ")").mousedown(function() {
+				play("Trombone-" + $("#piano .piano .keys div").index(this));
+			});
+		}
+		$('#button-piano').removeClass('selected');
+		$('#button-sax').removeClass('selected');
+		$('#button-trombone').addClass('selected');
+		if (playClick) {
+			play("Click");
+		}
+		setupSingle(false);
+	}
+
+	setupKeys = function(playClick) {
+		$("#piano .piano .keys p").removeClass("hidden");
+		$('#button-keys').addClass('selected');
+		$('#button-nokeys').removeClass('selected');
+		if (playClick) {
+			play("Click");
+		}
+	}
+
+	setupNoKeys = function(playClick) {
+		$("#piano .piano .keys p").addClass("hidden");
+		$('#button-keys').removeClass('selected');
+		$('#button-nokeys').addClass('selected');
+		if (playClick) {
+			play("Click");
+		}
+	}
+
+	$('#piano-template').children().clone().appendTo('#piano');
+	
+	var blackKeys = [97,100,102,104,106,107,59,39,51,52,53,55,56,48,45,61];
+	var whiteKeys = [92,122,120,99,118,98,110,109,44,46,47,113,119,101,114,116,121,117,105,111,112,91,93];
+
+	for (var i = 0 ; i < whiteKeys.length ; i++) {
+		$("#piano .piano .keys .whitekey:eq(" + i + ")").html("<p>" + String.fromCharCode(whiteKeys[i]) + "</p>");
+	}
+	for (var i = 0 ; i < blackKeys.length ; i++) {
+		$("#piano .piano .keys .blackKey:eq(" + i + ")").html("<p>" + String.fromCharCode(blackKeys[i]) + "</p>");
+	}
+	
+	$('#button-piano').click(function() { setupPiano(true); });
+	$('#button-sax').click(function() { setupSax(true); });
+	$('#button-trombone').click(function() { setupTrombone(true); });
+	$('#button-keys').click(function() { setupKeys(true); });
+	$('#button-nokeys').click(function() { setupNoKeys(true); });
+	$('#button-multi').click(function() { setupMultiple(true); });
+	$('#button-single').click(function() { setupSingle(true); });
+	setupMultiple(false);
+	setupPiano(false);
+	setupNoKeys(false);
+	
+	$(document).keypress(function(event) {
+		var key = event.which;
+		//$('#key').text("Key: " + key);
+		$('#key').text(key + ": " + String.fromCharCode(key));
+		for (var i = 0 ; i < whiteKeys.length ; i++) {
+			if (key == whiteKeys[i]) {
+				$("#piano .piano .keys .whitekey:eq(" + i + ")").addClass('selected');
+				$("#piano .piano .keys .whitekey:eq(" + i + ")").mousedown();
+				setTimeout(function() { $("#piano .piano .keys .whitekey:eq(" + i + ")").removeClass('selected'); });
+				return;
+			}
+		}
+		for (var i = 0 ; i < blackKeys.length ; i++) {
+			if (key == blackKeys[i]) {
+				$("#piano .piano .keys .blackkey:eq(" + i + ")").addClass('selected');
+				$("#piano .piano .keys .blackkey:eq(" + i + ")").mousedown();
+				setTimeout(function() { $("#piano .piano .keys .blackkey:eq(" + i + ")").removeClass('selected'); });
+				return;
+			}
+		}
+	});
+	
+});
+</script>
+</body>
+</html>
